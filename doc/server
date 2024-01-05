@@ -1,0 +1,60 @@
+Models in the Server:-
+
+
+Enums :-
+User -> guest user, member user, admin,system,receptionist
+Availability -> Available,Not Available,
+
+Rate definition:-
+col :- due_date_lapse,fine
+
+
+User Table:-
+columns : id,name,user_type,miscellaneous, contact_details
+
+Author table
+cols: id,name
+
+Books table:
+col: id,name, author ->foreign key
+
+Book_item table:
+col:id, availability,book_name-> foreign key
+
+
+Transaction table:-
+col : id,book_item,date_of_issue,due_date
+
+Pending Requests Table:-
+col: id, book_item, book_name, earliest available
+
+Query_table:-
+col :- ids,
+
+Services:-
+
+
+Registration Service:-
+-> Register the user
+
+User:
+
+Guest:-
+-> Apply for membership
+-> Browse the books
+
+Receptionist:-
+-> Lend a book on behalph of the member
+-> Cacel a borrow
+-> cancel membership
+
+Member:-
+-> Browse books
+-> Borrow a book
+-> Return a book
+-> Request to book a book once available
+
+Notification Service:-
+-> Confirmation for the book borrowed
+-> Tell me once the book is available
+-> Send overdue notification
