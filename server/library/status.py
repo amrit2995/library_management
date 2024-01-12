@@ -15,6 +15,13 @@ class BookStatus(Enum):
     LOANED = 3
     LOST = 4
 
+class Genres(Enum):
+    FICTION = 'Fiction'
+    NON_FICTION = 'Non-Fiction'
+    MYSTERY = 'Mystery'
+    SCIENCE_FICTION = 'Science Fiction'
+    BIOGRAPHY = 'Biography'
+
 class ReservationStatus(Enum):
     WAITING = 1
     PENDING = 2
@@ -27,3 +34,4 @@ class AccountStatus(Enum):
     CANCELED = 3
     BLACKLISTED = 4
     NONE = 5
+

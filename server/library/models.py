@@ -1,5 +1,5 @@
 from django.db import models
-from .status import AccountStatus
+from .status import AccountStatus, Genres
 from .models import *
 
 # import pdb;pdb.set_trace()
@@ -26,6 +26,7 @@ class Book(models.Model):
     ISBN = models.CharField(max_length=13, primary_key=True)
     title = models.CharField(max_length=255)
     subject = models.CharField(max_length=255)
+    genre = models.CharField(max_length=50, choices=[ (genre.value, genre.name) for genre in Genres], default=Genres.BIOGRAPHY.value)
     publisher = models.CharField(max_length=255)
     language = models.CharField(max_length=50)
     number_of_pages = models.PositiveIntegerField()
