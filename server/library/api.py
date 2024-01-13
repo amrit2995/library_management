@@ -6,6 +6,7 @@ from rest_framework import generics, status
 from .models import *
 from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
+from .db import DBExecutioner
 
 # Create your views here.
 
@@ -22,6 +23,11 @@ class PersonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
 
+class BookListCreateView(generics.ListCreateAPIView):
+    # import pdb;pdb.set_trace()
+    queryset = DBExecutioner.execute_query("get_all_books")
+    # def list(self, request, *args, **kwargs):
+    #     return super().list(request, *args, **kwargs)
 
 @csrf_exempt
 @api_view(['POST'])

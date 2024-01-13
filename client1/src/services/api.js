@@ -1,4 +1,5 @@
-import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
+import axios from "axios";
+// , {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
 
 const getBaseUrl = () => {
     let url = "http://localhost:8000/api/";
@@ -11,5 +12,4 @@ const instance = axios.create({
         "Content-Type": "application/json",
     }
 });
-
 export default instance;

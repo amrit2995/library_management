@@ -1,4 +1,3 @@
-import person from "../components/dashboard/person";
 import api from "./api";
 
 class PersonService {
