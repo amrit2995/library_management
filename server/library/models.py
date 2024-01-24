@@ -29,7 +29,7 @@ class Account(models.Model):
         db_table = "account"
 
 class Book(models.Model):
-    ISBN = models.CharField(max_length=13, primary_key=True)
+    ISBN = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     subject = models.CharField(max_length=255)
     genre = models.CharField(max_length=50, choices=[ (genre.value, genre.name) for genre in Genres], default=Genres.BIOGRAPHY.value)

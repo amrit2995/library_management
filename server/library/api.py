@@ -33,14 +33,14 @@ class AuthorListCreateView(generics.ListCreateAPIView):
     serializer_class = AuthorSerializer
 
 
-@csrf_exempt
-@api_view(['POST'])
-def create_person(request):
-    if request.method == "POST":
-        serializer = PersonSerializer(data=request.data)
-        if serializer.is_valid():
-            new_person = Person(**serializer.validated_data)
-            new_person.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response({"error":"Invalid request method"}, status=status.HTTP_400_BAD_REQUEST)
+# @csrf_exempt
+# @api_view(['POST'])
+# def create_person(request):
+#     if request.method == "POST":
+#         serializer = PersonSerializer(data=request.data)
+#         if serializer.is_valid():
+#             new_person = Person(**serializer.validated_data)
+#             new_person.save()
+#             return Response(serializer.data, status = status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     return Response({"error":"Invalid request method"}, status=status.HTTP_400_BAD_REQUEST)

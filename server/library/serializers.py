@@ -25,7 +25,6 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        import pdb;pdb.set_trace()
         person_data = validated_data.pop('person')
         person_instance,created = Person.objects.get_or_create(**person_data)
         # person_instance = Person.objects.create(**person_data)
@@ -47,7 +46,6 @@ class BookSerializer(serializers.ModelSerializer):
             defaults=validated_data,
             **validated_data
         )
-        import pdb;pdb.set_trace()
         for author_data in authors_data:
             person_data = author_data.pop('person')
             person_instance, created = Person.objects.get_or_create(**person_data)
