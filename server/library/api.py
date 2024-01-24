@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render
 # from rest_framework
 from rest_framework.response import Response
@@ -24,10 +25,13 @@ class PersonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PersonSerializer
 
 class BookListCreateView(generics.ListCreateAPIView):
-    # import pdb;pdb.set_trace()
-    queryset = DBExecutioner.execute_query("get_all_books")
-    # def list(self, request, *args, **kwargs):
-    #     return super().list(request, *args, **kwargs)
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class AuthorListCreateView(generics.ListCreateAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
 
 @csrf_exempt
 @api_view(['POST'])

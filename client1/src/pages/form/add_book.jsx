@@ -28,7 +28,7 @@ const CreateBookForm = () => {
       <h1> Add a Book </h1>
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Author"
+          label="Authors"
           fullWidth
           name="author"
           value={formData.author}

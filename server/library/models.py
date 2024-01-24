@@ -13,6 +13,9 @@ class Person(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        db_table = "person"
+
 class Account(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
     password = models.CharField(max_length=255)
@@ -21,6 +24,9 @@ class Account(models.Model):
 
     def __str__(self):
         return self.id
+    
+    class Meta:
+        db_table = "account"
 
 class Book(models.Model):
     ISBN = models.CharField(max_length=13, primary_key=True)
@@ -32,9 +38,14 @@ class Book(models.Model):
     number_of_pages = models.PositiveIntegerField()
     authors = models.ManyToManyField('Author', related_name="books")
 
+    def __str__(self) -> str:
+        return self.title
+    
+    class Meta:
+        db_table = "book"
+
 class BookItem(models.Model):
-    barcode = models.CharField(max_length=255, primary_key=True)
-    borrowed = models.BooleanField(default=False)
+    id = models.AutoField(primary_key=True, default=None)
     due_date = models.DateField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     book_format = models.CharField(max_length=50)
@@ -44,10 +55,20 @@ class BookItem(models.Model):
     rack = models.ForeignKey('Rack', on_delete=models.CASCADE, related_name="book_items")
     book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name="book_items")
 
-class Author(models.Model):
-    person = models.OneToOneField(Person, on_delete=models.CASCADE)
-    book = models.ManyToManyField(Book)
+    def __str__(self) -> str:
+        return self.id
+    
+    class Meta:
+        db_table = "book_item"
 
+class Author(models.Model):
+    person = models.OneToOneField(Person, on_delete=models.CASCADE, blank=True)
+
+    def __str__(self) -> str:
+        return self.id
+
+    class Meta:
+        db_table = "author"
 
 class Rack(models.Model):
     number = models.CharField(max_length=255, primary_key=True)
@@ -55,13 +76,19 @@ class Rack(models.Model):
 
     def __str__(self):
         return f"Rack {self.number} - {self.location_identifier}"
+    
+    class Meta:
+        db_table = "rack"
 
 class Reservation(models.Model):
-    book = models.ForeignKey(BookItem, on_delete=models.CASCADE, related_name="reservations")
-    account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="reservations")
+    id = models.AutoField(primary_key=True, default=None)
+    book = models.OneToOneField(Book, on_delete=models.CASCADE)
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
     requested_date = models.DateField()
 
 
     def __str__(self):
         return f"{self.id}"
+    class Meta:
+        db_table = "reservation"
 
