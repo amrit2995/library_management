@@ -1,13 +1,32 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { TextField, Button, Container, FormControl, InputLabel, Select, MenuItem, Input } from '@mui/material';
+
+const BookFormat = {
+  HARDCOVER: { value: 1, label: 'Hardcover' },
+  PAPERBACK: { value: 2, label: 'Paperback' },
+  AUDIO_BOOK: { value: 3, label: 'Audio Book' },
+  EBOOK: { value: 4, label: 'Ebook' },
+  NEWSPAPER: { value: 5, label: 'Newspaper' },
+  MAGAZINE: { value: 6, label: 'Magazine' },
+  JOURNAL: { value: 7, label: 'Journal' },
+};
+
+const Genres = {
+  BIOGRAPHY: { value: 1, label: 'Biography' },
+  HORROR: { value: 2, label: 'Horror' },
+  MYSTERY: { value: 3, label: 'Mystery' },
+  EDUCATION: { value: 4, label: 'Education' },
+};
 
 const CreateBookForm = () => {
   const [formData, setFormData] = useState({
-    author: '',
     title: '',
+    subject:'',
     publisher: '',
-    pages: '',
+    number_of_pages: '',
     bookFormat: '',
+    authors:'',
+    genre:''
   });
 
   const handleChange = (e) => {
@@ -28,18 +47,18 @@ const CreateBookForm = () => {
       <h1> Add a Book </h1>
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Authors"
-          fullWidth
-          name="author"
-          value={formData.author}
-          onChange={handleChange}
-          margin="normal"
-        />
-        <TextField
           label="Title"
           fullWidth
           name="title"
           value={formData.title}
+          onChange={handleChange}
+          margin="normal"
+        />
+        <TextField
+          label="Subject"
+          fullWidth
+          name="subject"
+          value={formData.subject}
           onChange={handleChange}
           margin="normal"
         />
@@ -52,26 +71,39 @@ const CreateBookForm = () => {
           margin="normal"
         />
         <TextField
-          label="Pages"
+          label="Number of Pages"
+          name="number_of_pages"
+          value={formData.number_of_pages}
+          onChange={handleChange}
           fullWidth
-          name="pages"
-          type="number"
-          value={formData.pages}
+          variant="outlined"
+          margin="normal"
+        />
+        <TextField
+          label="Authors"
+          fullWidth
+          name="author"
+          value={formData.author}
           onChange={handleChange}
           margin="normal"
         />
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="book-format-label">Book Format</InputLabel>
+        <FormControl fullWidth margin='normal'>
+          <InputLabel id="genre-label">Genre</InputLabel>
           <Select
-            labelId="book-format-label"
-            id="book-format"
-            name="bookFormat"
-            value={formData.bookFormat}
-            onChange={handleChange}
+            label="Genre"
+            labelId="genre-label"
+            id="genre"
+            name="genre"
+            value={Genres}
+            onChange={handleChange}  
           >
-            <MenuItem value="hardcover">Hardcover</MenuItem>
-            <MenuItem value="paperback">Paperback</MenuItem>
-            <MenuItem value="ebook">Ebook</MenuItem>
+            {
+              Object.keys(Genres).map((key) => (
+                <MenuItem key={key} value={Genres[key].value}>
+                  {Genres[key].label}
+                </MenuItem>
+              ))
+            }
           </Select>
         </FormControl>
         <Button type="submit" variant="contained" color="primary">
