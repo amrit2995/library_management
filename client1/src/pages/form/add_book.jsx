@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, FormControl, InputLabel, Select, MenuItem} from '@mui/material';
+import { TextField, Button, Container, FormControl, InputLabel, Select, MenuItem, Chip} from '@mui/material';
 import BookService from '../../services/BookService';
 
 const Genres = {
@@ -26,19 +26,6 @@ const CreateBookForm = () => {
     phone:''
   });
 
-  const handleAuthorChange = (event, index) => {
-    const { name, value } = event.target;
-    const updatedAuthors = [...book.authors];
-    updatedAuthors[index] = {
-      ...updatedAuthors[index],
-      [name]: value,
-    };
-    setBook({
-      ...book,
-      authors: updatedAuthors,
-    });
-  };
-
   const handleChange = (e) => {
     setBook({
       ...book,
@@ -49,8 +36,15 @@ const CreateBookForm = () => {
   const addAuthor = () => {
     setBook((prevBook) => ({
       ...prevBook,
-      authors: [...prevBook.authors, { name: '', address: '', email: '', phone: '' }],
+      authors: [...prevBook.authors, { name: newAuthor.name, address: newAuthor.address, email: newAuthor.email, phone: newAuthor.phone }],
     }));
+
+    setNewAuthor({
+      name:'',
+      address:'',
+      email:'',
+      phone:''
+    })
   };
 
   const handleNewAuthorChange = (event) => {
@@ -62,7 +56,7 @@ const CreateBookForm = () => {
     e.preventDefault();
     // Implement logic to handle form submission (e.g., send data to server or perform other actions)
     BookService.sendBookData(book)
-    console.log('Form submitted with data:', book);
+    // console.log('Form submitted with data:', book);
     setBook({
       title: '',
       subject:'',
@@ -73,118 +67,128 @@ const CreateBookForm = () => {
     })
   };
 
+  const removeAuthor = (index) => {
+    setBook((prevBook) => ({
+      ...prevBook,
+      authors: prevBook.authors.filter((_, i) => i !== index),
+    }));
+  };
+
+  const displayAuthors = () => {
+    return book.authors.map((author, index) => (
+      <Chip
+        key={index}
+        label={`${author.name}`}
+        onDelete={() => removeAuthor(index)}
+        style={{ margin: '4px' }}
+      />
+    ));
+  };
+
+
   return (
     <Container maxWidth="sm">
       <h1> Add a Book </h1>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Title"
-          fullWidth
-          name="title"
-          value={ book.title}
-          onChange={handleChange}
-          margin="normal"
-        />
-        <TextField
-          label="Subject"
-          fullWidth
-          name="subject"
-          value={ book.subject}
-          onChange={handleChange}
-          margin="normal"
-        />
-        <TextField
-          label="Publisher"
-          fullWidth
-          name="publisher"
-          value={ book.publisher}
-          onChange={handleChange}
-          margin="normal"
-        />
-        <TextField
-          label="Number of Pages"
-          name="number_of_pages"
-          value={ book.number_of_pages}
-          onChange={handleChange}
-          fullWidth
-          variant="outlined"
-          margin="normal"
-        />
-        <FormControl fullWidth margin='normal'>
-          <InputLabel id="genre-label">Genre</InputLabel>
-          <Select
-            label="Genre"
-            labelId="genre-label"
-            id="genre"
-            name="genre"
-            defaultValue={Genres.BIOGRAPHY.value}
-            onChange={handleChange}>
-            {Object.keys(Genres).map((key) => (
-              <MenuItem key={key} value={Genres[key].value}>
-                {Genres[key].label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        {/* Author details input fields */}
-        {book.authors.map((author, index) => (
-          <div key={index}>
+      <div name="book">
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Title"
+            fullWidth
+            name="title"
+            value={ book.title}
+            onChange={handleChange}
+            margin="normal"
+          />
+          <TextField
+            label="Subject"
+            fullWidth
+            name="subject"
+            value={ book.subject}
+            onChange={handleChange}
+            margin="normal"
+          />
+          <TextField
+            label="Publisher"
+            fullWidth
+            name="publisher"
+            value={ book.publisher}
+            onChange={handleChange}
+            margin="normal"
+          />
+          <TextField
+            label="Number of Pages"
+            name="number_of_pages"
+            value={ book.number_of_pages}
+            onChange={handleChange}
+            fullWidth
+            variant="outlined"
+            margin="normal"
+          />
+          <FormControl fullWidth margin='normal'>
+            <InputLabel id="genre-label">Genre</InputLabel>
+            <Select
+              label="Genre"
+              labelId="genre-label"
+              id="genre"
+              name="genre"
+              defaultValue={Genres.BIOGRAPHY.value}
+              onChange={handleChange}>
+              {Object.keys(Genres).map((key) => (
+                <MenuItem key={key} value={Genres[key].value}>
+                  {Genres[key].label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <div>
+            <InputLabel style={{ display: 'flex', alignItems: 'center', gap: '10px' }} >Authors</InputLabel>
+            {displayAuthors()}
+          </div>
+          {/* New Author input fields */}
+          <div name="author" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }} >
             <TextField
               label="Author Name"
               fullWidth
               name="name"
-              value={author.name}
-              onChange={(e) => handleAuthorChange(e, index)}
+              value={newAuthor.name}
+              onChange={handleNewAuthorChange}
               margin="normal"
             />
-            {/* Include other author details input fields (address, email, phone, etc.) */}
+            <TextField
+              label="Author Address"
+              fullWidth
+              name="address"
+              value={newAuthor.address}
+              onChange={handleNewAuthorChange}
+              margin="normal"
+            />
+            <TextField
+              label="Author Email"
+              fullWidth
+              name="email"
+              value={newAuthor.email}
+              onChange={handleNewAuthorChange}
+              margin="normal"
+            />
+            <TextField
+              label="Author Phone"
+              fullWidth
+              name="phone"
+              value={newAuthor.phone}
+              onChange={handleNewAuthorChange}
+              margin="normal"
+            />
+            {/* Button to add more authors */}
+            <Button variant="contained" color="primary" onClick={addAuthor}>
+              Add Author
+            </Button>
           </div>
-        ))}
 
-        {/* New Author input fields */}
-        <TextField
-          label="Author Name"
-          fullWidth
-          name="name"
-          value={newAuthor.name}
-          onChange={handleNewAuthorChange}
-          margin="normal"
-        />
-        <TextField
-          label="Author Address"
-          fullWidth
-          name="address"
-          value={newAuthor.address}
-          onChange={handleNewAuthorChange}
-          margin="normal"
-        />
-        <TextField
-          label="Author Email"
-          fullWidth
-          name="email"
-          value={newAuthor.email}
-          onChange={handleNewAuthorChange}
-          margin="normal"
-        />
-        <TextField
-          label="Author Phone"
-          fullWidth
-          name="phone"
-          value={newAuthor.phone}
-          onChange={handleNewAuthorChange}
-          margin="normal"
-        />
-
-        {/* Button to add more authors */}
-        <Button variant="contained" color="primary" onClick={addAuthor}>
-          Add Author
-        </Button>
-
-        <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
-          Create Book
-        </Button>
-      </form>
+          <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
+            Create Book
+          </Button>
+        </form>
+      </div>
     </Container>
   );
 };
